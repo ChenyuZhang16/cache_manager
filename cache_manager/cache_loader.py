@@ -5,7 +5,7 @@ import tarfile
 import zipfile
 
 
-def loadFromCache(key: str, registry):
+def loadFromCache(key: str, registry, cache_path):
     """
     Using the key, locate the file from cache folder. If required file does not exit
     in the cache, will attempt to download and cache it.
@@ -20,7 +20,7 @@ def loadFromCache(key: str, registry):
 
     resource = registry[key]
 
-    cache_path = os.path.expanduser("~/.cache/mmxai")
+    cache_path = os.path.expanduser(cache_path)
     file_path = os.path.join(
         cache_path, resource["dir_path"], resource["name"])
 
@@ -40,7 +40,7 @@ def loadFromCache(key: str, registry):
             extractFile(resource, download_path)
 
     assert os.path.isfile(
-        file_path), f"ERROR: after downloading, {file_path} is still avaliable. Records in mmxai.utils.cache_manager.file_register.py might be wrong."
+        file_path), f"ERROR: after downloading, {file_path} is still avaliable. Records in file registry might be wrong."
 
     return file_path
 
