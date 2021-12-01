@@ -40,7 +40,7 @@ def loadFromCache(key: str, registry, cache_path):
             extractFile(resource, download_path)
 
     assert os.path.isfile(
-        file_path), f"ERROR: after downloading, {file_path} is still avaliable. Records in file registry might be wrong."
+        file_path), f"ERROR: after downloading, {file_path} is still not avaliable. Records in file registry might be wrong."
 
     return file_path
 
