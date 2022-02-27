@@ -3,6 +3,12 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+requirements = []
+with open("requirements.txt") as req_f:
+    for line in req_f:
+        requirements.append(line.strip())
+
+
 setuptools.setup(
     name="cache_manager",
     version="0.0.1",
@@ -23,4 +29,5 @@ setuptools.setup(
     package_dir={"": "."},
     packages=setuptools.find_packages(where="."),
     python_requires=">=3.6",
+    install_requires=requirements
 )

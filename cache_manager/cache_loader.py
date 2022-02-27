@@ -3,6 +3,7 @@ import requests
 from tqdm import tqdm
 import tarfile
 import zipfile
+import gdown
 
 
 def loadFromCache(key: str, registry, cache_path):
@@ -80,38 +81,7 @@ def downloadFromWeb(url, download_path):
 
 def downloadFromGoogleDrive(id, download_path):
 
-    def get_confirm_token(response):
-        for key, value in response.cookies.items():
-            if key.startswith('download_warning'):
-                return value
-
-        return None
-
-    def save_response_content(response, download_path):
-        chunk_size = 32768
-
-        progress_bar = tqdm(total=None, unit='iB', unit_scale=True)
-
-        with open(download_path, "wb") as file:
-            for chunk in response.iter_content(chunk_size):
-                if chunk:  # filter out keep-alive new chunks
-                    progress_bar.update(len(chunk))
-                    file.write(chunk)
-
-        progress_bar.close()
-
-    google_drive_url = "https://docs.google.com/uc?export=download"
-
-    session = requests.Session()
-
-    response = session.get(google_drive_url, params={'id': id}, stream=True)
-    token = get_confirm_token(response)
-
-    if token:
-        params = {'id': id, 'confirm': token}
-        response = session.get(google_drive_url, params=params, stream=True)
-
-    save_response_content(response, download_path)
+    gdown.download(id=id, output=download_path)
 
 
 def extractFile(resource, download_path, remove=True):
